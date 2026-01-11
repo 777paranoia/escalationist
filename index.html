@@ -63,7 +63,7 @@ body {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  background: #222; /* Placeholder so no more black holes */
+  background: #222;
 }
 .face img {
   width: 100%;
@@ -74,7 +74,6 @@ body {
 .front { transform: translateZ(calc(var(--case-depth) / 2)); }
 .back { transform: rotateY(180deg) translateZ(calc(var(--case-depth) / 2)); }
 
-/* Spines */
 .spine-left, .spine-right, .edge-top, .edge-bottom {
   position: absolute;
   background: #1a1a1a;
@@ -167,17 +166,12 @@ Object.keys(albumData).sort((a, b) => parseInt(a) - parseInt(b)).forEach(id => {
 document.querySelectorAll('.case').forEach(cd => {
   const id = cd.getAttribute('data-id');
   
-  // Starting positions
   const baseY = Math.random() * 360;
   const baseX = Math.random() * 20 - 10;
   
-  // REDUCED TURNS: Max 1.5 rotations instead of 3. 
-  // This prevents that "blur" effect.
   const yTurns = (Math.random() * 1 + 0.5) * 360 * (Math.random() > 0.5 ? 1 : -1);
   const xTurns = (Math.random() * 0.3 + 0.1) * 180 * (Math.random() > 0.5 ? 1 : -1);
   
-  // CONSISTENT PACE: 14s (faster) to 22s (slower).
-  // No more "standing still" and no more "speed demons."
   const duration = 14 + Math.random() * 8; 
 
   cd.style.setProperty('--y-start', baseY + 'deg');
