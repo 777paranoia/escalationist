@@ -11,7 +11,7 @@
 }
 body {
   margin: 0;
-  padding: 180px 40px 40px 40px;
+  padding: 260px 40px 40px 40px;
   background: #000;
   color: #fff;
   text-align: center;
@@ -113,16 +113,62 @@ body {
   border: 1px solid rgba(255,255,255,0.3);
   text-transform: uppercase;
 }
+.footer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px 0;
+  z-index: 1000;
+  pointer-events: none; 
+}
+
+.footer-content {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.85rem;
+  letter-spacing: 0.2rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.footer-content a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-content a:hover {
+  color: #fff;
+}
+
+/* New style for the bottom-right link */
+.catalog-link {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 1001;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.85rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
 </style>
 </head>
 <body>
 <img src="files/img/escbanner.png" id="header-logo">
-<a href="https://1-1-7.bandcamp.com" class="bc-link">BANDCAMP</a>
 <video id="bg" autoplay muted loop playsinline>
   <source src="files/mov/cdbg.mp4" type="video/mp4">
 </video>
 <div id="custom-cursor"></div>
 <div class="grid" id="cdGrid"></div>
+
+<a href="/117.html" class="catalog-link">117 &gt;</a>
+
 <script>
 const albumData = {
   "01": ["UNIX666-01", "DJ Speedsick", "Satanic Connection Between UNIX® And The Underworld"],
@@ -199,5 +245,13 @@ document.querySelectorAll('.case').forEach(cd => {
   });
 });
 </script>
+<div class="footer-container">
+  <div class="footer-content">
+    <div>EST. 2024</div>
+    <div>CHICAGO, IL</div>
+    <a href="mailto:exorcisms@escalation.ist">EXORCISMS@ESCALATION.IST</a><br>
+    <a href="https://1-1-7.bandcamp.com" target="_blank">BANDCAMP</a>
+  </div>
+</div>
 </body>
 </html>

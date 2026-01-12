@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SNAKE EYES & SEVENS</title>
+<style>
+:root {
+  --case-width: 184px;
+  --case-height: 288px;
+  --case-depth: 36px;
+}
+body {
+  margin: 0;
+  padding: 450px 40px 100px 40px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: 'GGX88 Book', monospace;
+  overflow-x: hidden;
+}
+#header-logo {
+  position: fixed;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  max-width: 900px;
+  z-index: 1000;
+  pointer-events: none;
+}
+#bg-static {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.6;
+}
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 80px;
+  justify-items: center;
+}
+.scene {
+  width: var(--case-width);
+  height: var(--case-height);
+  perspective: 1200px;
+}
+.case {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spin var(--duration, 24s) linear infinite;
+  cursor: crosshair;
+}
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.front { transform: translateZ(calc(var(--case-depth) / 2)); }
+.back { transform: rotateY(180deg) translateZ(calc(var(--case-depth) / 2)); }
+.spine-left, .spine-right {
+  position: absolute;
+  width: var(--case-depth);
+  height: var(--case-height);
+  left: calc(50% - (var(--case-depth) / 2));
+}
+.spine-left { transform: translateX(calc(var(--case-width) / -2)) rotateY(-90deg); }
+.spine-right { 
+  transform: translateX(calc(var(--case-width) / 2)) rotateY(90deg);
+  background: #555555; 
+}
+.edge-top, .edge-bottom {
+  position: absolute;
+  width: var(--case-width);
+  height: var(--case-depth);
+  top: calc(50% - (var(--case-depth) / 2));
+  background: #555555; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.edge-top { transform: translateY(calc(var(--case-height) / -2)) rotateX(90deg); }
+.edge-bottom { transform: translateY(calc(var(--case-height) / 2)) rotateX(-90deg); }
+@keyframes spin {
+  from { transform: rotateX(var(--x-start, 0deg)) rotateY(var(--y-start, 0deg)); }
+  to { transform: rotateX(var(--x-end, 0deg)) rotateY(var(--y-end, 360deg)); }
+}
+.case:hover { animation-play-state: paused; }
+#custom-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  color: white;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  display: none;
+  background: rgba(0,0,0,0.9);
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,0.3);
+  text-transform: uppercase;
+}
+.footer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px 0;
+  z-index: 1000;
+  pointer-events: none; 
+}
+.footer-content {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.85rem;
+  letter-spacing: 0.2rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+.footer-content a { color: #ffffff; text-decoration: none; font-weight: bold; }
+</style>
+</head>
+<body>
+<img src="files/img/117banner.png" id="header-logo">
+<img src="files/img/117bg.jpg" id="bg-static">
+<video id="bg" autoplay muted loop playsinline></video>
+<div id="custom-cursor"></div>
+<div class="grid" id="cassetteGrid"></div>
+<script>
+const tapeData = {
+  "01": ["117-01", "DJ Speedsick", "In Trances"],
+  "02": ["117-02", "Draag", "Sys"],
+  "03": ["117-03", "Crime Unit", "Paranoia Loops"],
+  "04": ["117-04", "Drume", "Psionics"],
+  "05": ["117-05", "DJ Loser", ""],
+  "06": ["117-06", "Nebuchadnezzar", ""],
+  "07": ["117-07", "Julien Andreas", "Trust In Filth"],
+  "08": ["117-08", "Church Shuttle", "Earth Assignment"],
+  "09": ["117-09", "J De Sosa", ""],
+  "10": ["117-10", "Network Glass", ""],
+  "11": ["117-11", "Intrusive Thought", ""],
+  "12": ["117-12", "Freeman 713", ""],
+  "13": ["117-13", "Jacob Winans", "Bound For The Floor"],
+  "14": ["117-00", "Club Noid", ""]
+};
+const grid = document.getElementById('cassetteGrid');
+const cursor = document.getElementById('custom-cursor');
+const bgVideo = document.getElementById('bg');
+const previewPlayer = new Audio();
+previewPlayer.loop = true;
+Object.keys(tapeData).sort((a,b) => parseInt(a) - parseInt(b)).forEach(id => {
+  const scene = document.createElement('div');
+  scene.className = 'scene';
+  const backImg = `files/img/cs/${id}back.jpg`;
+  const spineImg = `files/img/cs/${id}spine.jpg`;
+  scene.innerHTML = `
+    <div class="case" data-id="${id}">
+      <div class="face front"><img src="files/img/cs/${id}front.jpg"></div>
+      <div class="face back"><img src="${backImg}"></div>
+      <div class="spine-left"><img src="${spineImg}"></div>
+      <div class="spine-right"></div>
+      <div class="edge-top"></div>
+      <div class="edge-bottom"></div>
+    </div>
+  `;
+  grid.appendChild(scene);
+});
+document.querySelectorAll('.case').forEach(tape => {
+  const id = tape.getAttribute('data-id');
+  const baseY = Math.random() * 360;
+  const baseX = Math.random() * 20 - 10;
+  const yTurns = (Math.random() * 1 + 0.5) * 360 * (Math.random() > 0.5 ? 1 : -1);
+  const xTurns = (Math.random() * 0.3 + 0.1) * 180 * (Math.random() > 0.5 ? 1 : -1);
+  const duration = 20 + Math.random() * 10;
+  tape.style.setProperty('--y-start', baseY + 'deg');
+  tape.style.setProperty('--x-start', baseX + 'deg');
+  tape.style.setProperty('--y-end', (baseY + yTurns) + 'deg');
+  tape.style.setProperty('--x-end', (baseX + xTurns) + 'deg');
+  tape.style.setProperty('--duration', duration + 's');
+  tape.addEventListener('mouseenter', () => {
+    const info = tapeData[id];
+    cursor.innerHTML = `${info[0]}<br>${info[1]}<br>${info[2]}`;
+    cursor.style.display = 'block';
+    bgVideo.src = `files/mov/${id}.mp4`;
+    bgVideo.style.opacity = '0.6';
+    bgVideo.play().catch(() => {});
+    const audioId = (id === "14") ? "00" : id;
+    previewPlayer.src = `files/aud/prev/${audioId}.mp3`; 
+    previewPlayer.play().catch(() => {});
+  });
+  window.addEventListener('mousemove', (e) => {
+    cursor.style.left = (e.clientX + 20) + 'px';
+    cursor.style.top = (e.clientY + 20) + 'px';
+  });
+  tape.addEventListener('mouseleave', () => {
+    cursor.style.display = 'none';
+    bgVideo.style.opacity = '0';
+    previewPlayer.pause();
+    previewPlayer.currentTime = 0;
+  });
+});
+</script>
+<div class="footer-container">
+  <div class="footer-content">
+    <div>EST. 2018</div>
+    <div>CHICAGO, IL</div>
+    <a href="#">DO NOT CONTACT</a><br>
+    <a href="https://1-1-7.bandcamp.com" target="_blank">BANDCAMP</a>
+  </div>
+</div>
+</body>
+</html>
