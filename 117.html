@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +21,7 @@ body {
 }
 #header-logo {
   position: fixed;
-  top: -30px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   width: 85%;
@@ -146,6 +147,20 @@ body {
   text-transform: uppercase;
 }
 .footer-content a { color: #ffffff; text-decoration: none; font-weight: bold; }
+
+.catalog-link {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 1001;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.85rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+}
+
 </style>
 </head>
 <body>
@@ -154,6 +169,9 @@ body {
 <video id="bg" autoplay muted loop playsinline></video>
 <div id="custom-cursor"></div>
 <div class="grid" id="cassetteGrid"></div>
+
+<a href="/index.html" class="catalog-link">UNIX666 &gt;</a>
+
 <script>
 const tapeData = {
   "01": ["117-01", "DJ Speedsick", "In Trances"],
@@ -233,7 +251,9 @@ document.querySelectorAll('.case').forEach(tape => {
     <div>EST. 2018</div>
     <div>CHICAGO, IL</div>
     <a href="#">DO NOT CONTACT</a><br>
-    <a href="https://1-1-7.bandcamp.com" target="_blank">BANDCAMP</a>
+    <a href="https://1-1-7.bandcamp.com" target="_blank">BANDCAMP</a> 
+    <a href="https://soundcloud.com/1-1-7" target="_blank">SOUNDCLOUD</a>
+
   </div>
 </div>
 </body>
