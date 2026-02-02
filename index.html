@@ -11,22 +11,12 @@
 }
 body {
   margin: 0;
-  padding: 260px 40px 40px 40px;
+  padding: 100px 40px 40px 40px;
   background: #000;
   color: #fff;
   text-align: center;
   font-family: 'GGX88 Book', monospace;
   overflow-x: hidden;
-}
-#header-logo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  pointer-events: none;
-  display: block;
-  margin: 0;
 }
 .bc-link {
   position: fixed; 
@@ -39,7 +29,8 @@ body {
   font-weight: bold;
   letter-spacing: 2px;
     padding: 5px 10px;
-}#bg {
+}
+#bg {
   position: fixed;
   inset: 0;
   width: 100%;
@@ -47,7 +38,6 @@ body {
   object-fit: cover;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.6;
 }
 .grid {
   display: grid;
@@ -158,10 +148,7 @@ body {
 </style>
 </head>
 <body>
-<img src="files/img/escbanner.png" id="header-logo">
-<video id="bg" autoplay muted loop playsinline>
-  <source src="files/mov/cdbg.mp4" type="video/mp4">
-</video>
+<img id="bg" src="files/mov/esc-nu.gif" alt="background">
 <div id="custom-cursor"></div>
 <div class="grid" id="cdGrid"></div>
 
@@ -193,7 +180,6 @@ const albumData = {
 };
 const grid = document.getElementById('cdGrid');
 const cursor = document.getElementById('custom-cursor');
-const bgVideo = document.getElementById('bg');
 const previewPlayer = new Audio();
 previewPlayer.loop = true;
 Object.keys(albumData).sort((a, b) => parseInt(a) - parseInt(b)).forEach(id => {
@@ -225,8 +211,6 @@ document.querySelectorAll('.case').forEach(cd => {
     const info = albumData[id];
     cursor.innerHTML = `${info[0]}<br>${info[1]}<br>${info[2]}`;
     cursor.style.display = 'block';
-    bgVideo.src = `files/mov/${id}.mp4`;
-    bgVideo.play();
     previewPlayer.src = `files/aud/prev/${id}_preview.mp3`;
     previewPlayer.play().catch(() => {});
   });
@@ -236,8 +220,6 @@ document.querySelectorAll('.case').forEach(cd => {
   });
   cd.addEventListener('mouseleave', () => {
     cursor.style.display = 'none';
-    bgVideo.src = "files/mov/cdbg.mp4";
-    bgVideo.play();
     previewPlayer.pause();
     previewPlayer.currentTime = 0;
   });

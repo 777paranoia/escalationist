@@ -11,32 +11,12 @@
 }
 body {
   margin: 0;
-  padding: 450px 40px 100px 40px;
+  padding: 100px 40px 100px 40px;
   background: #000;
   color: #fff;
   text-align: center;
   font-family: 'GGX88 Book', monospace;
   overflow-x: hidden;
-}
-#header-logo {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85%;
-  max-width: 900px;
-  z-index: 1000;
-  pointer-events: none;
-}
-#bg-static {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-  pointer-events: none;
-  opacity: 0.6;
 }
 #bg {
   position: fixed;
@@ -46,8 +26,6 @@ body {
   object-fit: cover;
   z-index: -1;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 .grid {
   display: grid;
@@ -168,9 +146,7 @@ body {
 </style>
 </head>
 <body>
-<img src="files/img/117banner.png" id="header-logo">
-<img src="files/img/117bg.jpg" id="bg-static">
-<video id="bg" autoplay muted loop playsinline></video>
+<img id="bg" src="files/mov/117-nu.gif" alt="background">
 <div id="custom-cursor"></div>
 <div class="grid" id="cassetteGrid"></div>
 
@@ -193,7 +169,6 @@ const tapeData = {
 };
 const grid = document.getElementById('cassetteGrid');
 const cursor = document.getElementById('custom-cursor');
-const bgVideo = document.getElementById('bg');
 const previewPlayer = new Audio();
 previewPlayer.loop = true;
 Object.keys(tapeData).sort((a,b) => parseInt(a) - parseInt(b)).forEach(id => {
@@ -229,9 +204,6 @@ document.querySelectorAll('.case').forEach(tape => {
     const info = tapeData[id];
     cursor.innerHTML = `${info[0]}<br>${info[1]}<br>${info[2]}`;
     cursor.style.display = 'block';
-    bgVideo.src = `files/mov/${id}.mp4`;
-    bgVideo.style.opacity = '0.6';
-    bgVideo.play().catch(() => {});
     const audioId = (id === "14") ? "00" : id;
     previewPlayer.src = `files/aud/prev/${audioId}.mp3`; 
     previewPlayer.play().catch(() => {});
@@ -242,7 +214,6 @@ document.querySelectorAll('.case').forEach(tape => {
   });
   tape.addEventListener('mouseleave', () => {
     cursor.style.display = 'none';
-    bgVideo.style.opacity = '0';
     previewPlayer.pause();
     previewPlayer.currentTime = 0;
   });

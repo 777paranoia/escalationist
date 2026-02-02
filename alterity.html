@@ -22,14 +22,6 @@ body {
   height: 100vh;
   width: 100vw;
 }
-#header-logo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  pointer-events: none;
-}
 #bg {
   position: fixed;
   inset: 0;
@@ -54,7 +46,6 @@ body {
   image-rendering: pixelated;
   filter: contrast(130%) brightness(1.1);
 }
-/* CUSTOM CURSOR STYLING */
 #custom-cursor {
   position: fixed;
   pointer-events: none;
@@ -158,13 +149,11 @@ body {
 </style>
 </head>
 <body>
-<img src="files/img/alterity.png" id="header-logo">
 <div id="censor-overlay"></div>
 <div id="custom-cursor"></div>
 
-<video id="bg" autoplay muted loop playsinline>
-  <source src="files/mov/alt.mp4" type="video/mp4">
-</video>
+<img id="bg" src="files/mov/alt-nu.gif">
+
 <div class="grid" id="cdGrid"></div>
 
 <a href="/index.html" class="catalog-link1">UNIX666 &gt;</a>
@@ -188,8 +177,8 @@ Object.keys(albumData).forEach(id => {
   scene.className = 'scene';
   scene.innerHTML = `
     <div class="case" data-id="${id}">
-      <div class="face front"><img src="files/img/maxif.jpeg"></div>
-      <div class="face back"><img src="files/img/maxib.jpeg"></div>
+      <div class="face front"><img src="files/img/maxi/maxif.jpeg"></div>
+      <div class="face back"><img src="files/img/maxi/maxib.jpeg"></div>
       <div class="spine-left"></div><div class="spine-right"></div>
       <div class="edge-top"></div><div class="edge-bottom"></div>
     </div>
@@ -208,7 +197,6 @@ document.querySelectorAll('.case').forEach(cd => {
   cd.style.setProperty('--x-end', (baseX + xTurns) + 'deg');
   cd.style.setProperty('--duration', duration + 's');
 
-  // HOVER LOGIC FOR THE CURSOR
   cd.addEventListener('mouseenter', () => {
     cursor.innerHTML = `chmod 777 ./01<br>? ? ? ? ? ?<br>? ? ? ? ? ?`;
     cursor.style.display = 'block';
