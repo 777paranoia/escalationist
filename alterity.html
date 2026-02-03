@@ -5,9 +5,10 @@
 <title>alt.erity.*</title>
 <style>
 :root {
-  --case-width: 250px;
-  --case-height: 221px;
-  --case-depth: 7px; 
+  /* SCALED 1.3333x */
+  --case-width: 333px;
+  --case-height: 295px;
+  --case-depth: 9px; 
 }
 body {
   margin: 0;
@@ -28,8 +29,19 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
   pointer-events: none;
+}
+#banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1; 
+  pointer-events: none;
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
 }
 #censor-overlay {
   position: fixed;
@@ -38,8 +50,9 @@ body {
   transform: translate(-50%, -50%);
   z-index: 50;
   pointer-events: none;
-  width: 200px; 
-  height: 200px;
+  /* SCALED 1.3333x */
+  width: 267px; 
+  height: 267px;
   background: url('files/mov/static.gif') center/cover no-repeat;
   mix-blend-mode: screen;
   will-change: transform;
@@ -67,7 +80,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 1; 
 }
 .scene {
   width: var(--case-width);
@@ -152,7 +165,8 @@ body {
 <div id="censor-overlay"></div>
 <div id="custom-cursor"></div>
 
-<img id="bg" src="files/mov/alt-nu.gif">
+<img id="bg" src="files/mov/alt.gif">
+<img id="banner" src="files/img/altbanner.png">
 
 <div class="grid" id="cdGrid"></div>
 
