@@ -11,16 +11,15 @@
 }
 body {
   margin: 0;
-  padding: 0;
+  padding: 100px 40px 40px 40px;
   background: #000;
   color: #fff;
   font-family: 'GGX88 Book', monospace;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
   height: 100vh;
   width: 100vw;
+  box-sizing: border-box;
 }
 #bg {
   position: fixed;
@@ -43,7 +42,7 @@ body {
   object-fit: contain;
 }
 #censor-overlay {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -89,15 +88,14 @@ body {
 .grid {
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
-  height: 100%;
   z-index: 1; 
 }
 .scene {
   width: var(--case-width);
   height: var(--case-height);
   perspective: 1200px;
+  position: relative;
 }
 .case {
   width: 100%;
@@ -172,7 +170,6 @@ body {
 </style>
 </head>
 <body>
-<div id="censor-overlay"></div>
 <div id="custom-cursor"></div>
 <img id="bg" src="files/mov/alt.gif">
 <img id="banner" src="files/img/altbanner.png">
@@ -196,6 +193,7 @@ Object.keys(albumData).forEach(id => {
   const scene = document.createElement('div');
   scene.className = 'scene';
   scene.innerHTML = `
+    <div id="censor-overlay"></div>
     <div class="case" data-id="${id}">
       <div class="face front"><img src="files/img/maxi/maxif.jpeg"></div>
       <div class="face back"><img src="files/img/maxi/maxib.jpeg"></div>
