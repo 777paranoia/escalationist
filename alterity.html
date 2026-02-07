@@ -5,7 +5,6 @@
 <title>alt.erity.*</title>
 <style>
 :root {
-  /* SCALED 1.3333x */
   --case-width: 333px;
   --case-height: 295px;
   --case-depth: 9px; 
@@ -50,7 +49,6 @@ body {
   transform: translate(-50%, -50%);
   z-index: 50;
   pointer-events: none;
-  /* SCALED 1.3333x */
   width: 267px; 
   height: 267px;
   background: url('files/mov/static.gif') center/cover no-repeat;
@@ -58,6 +56,20 @@ body {
   will-change: transform;
   image-rendering: pixelated;
   filter: contrast(130%) brightness(1.1);
+}
+@media (max-width: 768px) {
+  :root {
+    --case-width: 180px;
+    --case-height: 160px;
+    --case-depth: 5px;
+  }
+  #censor-overlay {
+    width: 140px;
+    height: 140px;
+  }
+  #banner {
+    top: 40%;
+  }
 }
 #custom-cursor {
   position: fixed;
@@ -119,13 +131,11 @@ body {
 .spine-right { width: var(--case-depth); height: var(--case-height); left: 50%; transform: translateX(calc(var(--case-width) / 2 - var(--case-depth))) rotateY(90deg); }
 .edge-top { width: var(--case-width); height: var(--case-depth); top: 50%; transform: translateY(calc(var(--case-height) / -2)) rotateX(90deg); }
 .edge-bottom { width: var(--case-width); height: var(--case-depth); top: 50%; transform: translateY(calc(var(--case-height) / 2 - var(--case-depth))) rotateX(-90deg); }
-
 @keyframes spin {
   from { transform: rotateX(var(--x-start, 0deg)) rotateY(var(--y-start, 0deg)); }
   to { transform: rotateX(var(--x-end, 0deg)) rotateY(var(--y-end, 360deg)); }
 }
 .case:hover { animation-play-state: paused; }
-
 .footer-container {
   position: fixed;
   bottom: 0;
@@ -164,15 +174,11 @@ body {
 <body>
 <div id="censor-overlay"></div>
 <div id="custom-cursor"></div>
-
 <img id="bg" src="files/mov/alt.gif">
 <img id="banner" src="files/img/altbanner.png">
-
 <div class="grid" id="cdGrid"></div>
-
 <a href="/index.html" class="catalog-link1">UNIX666 &gt;</a>
 <a href="/117.html" class="catalog-link2">117 &gt;</a>
-
 <div class="footer-container">
   <div class="footer-content">
     <div>EST. 2026</div>
@@ -180,12 +186,12 @@ body {
     <div>COMING SOON...</div>
   </div>
 </div>
-
 <script>
 const albumData = { "01": ["?????", "?????", "coming soon..."] };
 const grid = document.getElementById('cdGrid');
 const cursor = document.getElementById('custom-cursor');
-
+const previewPlayer = new Audio();
+previewPlayer.loop = true;
 Object.keys(albumData).forEach(id => {
   const scene = document.createElement('div');
   scene.className = 'scene';
@@ -199,7 +205,6 @@ Object.keys(albumData).forEach(id => {
   `;
   grid.appendChild(scene);
 });
-
 document.querySelectorAll('.case').forEach(cd => {
   const baseY = Math.random() * 360, baseX = Math.random() * 20 - 10;
   const yTurns = (Math.random() * 1 + 0.5) * 360 * (Math.random() > 0.5 ? 1 : -1);
@@ -210,16 +215,17 @@ document.querySelectorAll('.case').forEach(cd => {
   cd.style.setProperty('--y-end', (baseY + yTurns) + 'deg');
   cd.style.setProperty('--x-end', (baseX + xTurns) + 'deg');
   cd.style.setProperty('--duration', duration + 's');
-
   cd.addEventListener('mouseenter', () => {
     cursor.innerHTML = `chmod 777 ./01<br>? ? ? ? ? ?<br>? ? ? ? ? ?`;
     cursor.style.display = 'block';
+    previewPlayer.src = 'files/aud/dialup.mp3';
+    previewPlayer.play().catch(() => {});
   });
-
   cd.addEventListener('mouseleave', () => {
     cursor.style.display = 'none';
+    previewPlayer.pause();
+    previewPlayer.currentTime = 0;
   });
-
   window.addEventListener('mousemove', (e) => {
     cursor.style.left = (e.clientX + 20) + 'px';
     cursor.style.top = (e.clientY + 20) + 'px';
