@@ -192,10 +192,11 @@ const albumData = {
   "19": ["UNIX666-19", "Ian Lehman", "Memorex CD-R Archive"],
   "20": ["UNIX666-20", "DJ Speedsick", "Compliance OST"],
   "21": ["UNIX666-21", "grate²", "3 soundcloud rips from 2023"],
-  "22": ["UNIX666-23", "DJ Speedsick", "Basement Days"],
+  "22": ["UNIX666-22", "DJ Speedsick", "Basement Days"],
   "23": ["UNIX666-23", "Menorrhagia", "Discography *CANCELED*"],
-  "24": ["UNIX666-24", "Tony Wiggins", "Discography"],
-  "25": ["UNIX666-25", "DJ Speedsick", ".(s)EROTONERGIC.(t).OXIDROM(e)."]
+  "24": ["UNIX666-24", "Tony F. Wiggins", "Discography"],
+  "25": ["UNIX666-25", "DJ Speedsick", ".(s)EROTONERGIC.(t).OXIDROM(e)."],
+  "26": ["UNIX666-25", "DJ Speedsick", "Anti-Manifesto"]
 };
 const grid = document.getElementById('cdGrid');
 const cursor = document.getElementById('custom-cursor');
@@ -230,7 +231,7 @@ document.querySelectorAll('.case').forEach(cd => {
     const info = albumData[id];
     cursor.innerHTML = `${info[0]}<br>${info[1]}<br>${info[2]}`;
     cursor.style.display = 'block';
-    previewPlayer.src = `files/aud/prev/${id}_preview.mp3`;
+    previewPlayer.src = `files/aud/prev/unix666-${id}.mp3`;
     previewPlayer.play().catch(() => {});
   });
   window.addEventListener('mousemove', (e) => {

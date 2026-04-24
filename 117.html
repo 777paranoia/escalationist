@@ -50,6 +50,7 @@ body {
   width: var(--case-width);
   height: var(--case-height);
   perspective: 1200px;
+  position: relative;
 }
 .case {
   width: 100%;
@@ -103,6 +104,27 @@ body {
   to { transform: rotateX(var(--x-end, 0deg)) rotateY(var(--y-end, 360deg)); }
 }
 .case:hover { animation-play-state: paused; }
+.object-x {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+.object-x::before,
+.object-x::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 175%;
+  height: 22px;
+  background: #e00000;
+  box-shadow: 0 0 8px rgba(224, 0, 0, 0.65);
+  transform-origin: center;
+}
+.object-x::before { transform: translate(-50%, -50%) rotate(57deg); }
+.object-x::after { transform: translate(-50%, -50%) rotate(-57deg); }
 #custom-cursor {
   position: fixed;
   pointer-events: none;
@@ -116,6 +138,9 @@ body {
   padding: 10px 14px;
   border: 1px solid rgba(255,255,255,0.3);
   text-transform: uppercase;
+}
+#custom-cursor .redacted-line {
+  color: #e00000;
 }
 .footer-container {
   position: fixed;
@@ -200,6 +225,7 @@ Object.keys(tapeData).sort((a,b) => parseInt(a) - parseInt(b)).forEach(id => {
       <div class="edge-top"></div>
       <div class="edge-bottom"></div>
     </div>
+    ${id === "02" ? '<div class="object-x" aria-hidden="true"></div>' : ''}
   `;
   grid.appendChild(scene);
 });
@@ -217,10 +243,12 @@ document.querySelectorAll('.case').forEach(tape => {
   tape.style.setProperty('--duration', duration + 's');
   tape.addEventListener('mouseenter', () => {
     const info = tapeData[id];
-    cursor.innerHTML = `${info[0]}<br>${info[1]}<br>${info[2]}`;
+    cursor.innerHTML = id === "02"
+      ? `${info[0]}<br><span class="redacted-line">REDACTED</span><br><span class="redacted-line">REDACTED</span>`
+      : info.filter(Boolean).join('<br>');
     cursor.style.display = 'block';
     const audioId = (id === "14") ? "00" : id;
-    previewPlayer.src = `files/aud/prev/${audioId}.mp3`; 
+    previewPlayer.src = `files/aud/prev/117-${audioId}.mp3`; 
     previewPlayer.play().catch(() => {});
   });
   window.addEventListener('mousemove', (e) => {
