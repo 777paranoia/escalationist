@@ -24,7 +24,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -2; /* UPDATED: Moved to bottom */
+  z-index: -2; 
   pointer-events: none;
 }
 #banner {
@@ -32,7 +32,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: -1; /* INSERTED: Middle layer */
+  z-index: -1; 
   pointer-events: none;
   max-width: 90%;
   max-height: 90%;
@@ -44,7 +44,7 @@ body {
   gap: 80px;
   justify-items: center;
   position: relative;
-  z-index: 1; /* UPDATED: Top layer */
+  z-index: 1; 
 }
 .scene {
   width: var(--case-width);
@@ -125,6 +125,29 @@ body {
 }
 .object-x::before { transform: translate(-50%, -50%) rotate(57deg); }
 .object-x::after { transform: translate(-50%, -50%) rotate(-57deg); }
+
+.coming-soon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 4;
+  color: #fff;
+  font-size: 2.24rem;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0,0,0,0.9), 2px 2px 4px rgba(0,0,0,0.8), -2px -2px 4px rgba(0,0,0,0.8);
+  animation: floatText 2.5s ease-in-out infinite;
+}
+
+@keyframes floatText {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 #custom-cursor {
   position: fixed;
   pointer-events: none;
@@ -205,17 +228,26 @@ const tapeData = {
   "11": ["117-11", "Intrusive Thought", ""],
   "12": ["117-12", "Freeman 713", ""],
   "13": ["117-13", "Jacob Winans", "Bound For The Floor"],
-  "14": ["117-00", "Club Noid", ""]
+  "14": ["117-00", "Club Noid", ""],
+  "15": ["117-14", "Woundfucker", ""],
+  "16": ["117-15", "DJ Brainbleed", ""],
+  "17": ["117-16", "Chris Hunt", ""]
 };
 const grid = document.getElementById('cassetteGrid');
 const cursor = document.getElementById('custom-cursor');
 const previewPlayer = new Audio();
 previewPlayer.loop = true;
-Object.keys(tapeData).sort((a,b) => parseInt(a) - parseInt(b)).forEach(id => {
+
+// UPDATED: Added array index tracking to easily find the last 3 items
+Object.keys(tapeData).sort((a,b) => parseInt(a) - parseInt(b)).forEach((id, index, array) => {
   const scene = document.createElement('div');
   scene.className = 'scene';
   const backImg = `files/img/cs/${id}back.jpg`;
   const spineImg = `files/img/cs/${id}spine.jpg`;
+  
+  // Calculate if the current item is one of the last three
+  const isLastThree = index >= array.length - 3;
+
   scene.innerHTML = `
     <div class="case" data-id="${id}">
       <div class="face front"><img src="files/img/cs/${id}front.jpg"></div>
@@ -226,9 +258,11 @@ Object.keys(tapeData).sort((a,b) => parseInt(a) - parseInt(b)).forEach(id => {
       <div class="edge-bottom"></div>
     </div>
     ${id === "02" ? '<div class="object-x" aria-hidden="true"></div>' : ''}
+    ${isLastThree ? '<div class="coming-soon">COMING SOON</div>' : ''}
   `;
   grid.appendChild(scene);
 });
+
 document.querySelectorAll('.case').forEach(tape => {
   const id = tape.getAttribute('data-id');
   const baseY = Math.random() * 360;
